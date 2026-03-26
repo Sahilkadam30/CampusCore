@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student Register</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #141e30, #243b55);
+        }
+
+        .register-container {
+            background-color: #1f1f1f;
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.7);
+            text-align: center;
+        }
+
+        h2 {
+            color: #ffffff;
+            margin-bottom: 25px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            background-color: #ffffff;
+            color: #000;
+        }
+
+        input:focus, select:focus {
+            box-shadow: 0 0 5px #2196F3;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background-color: #2196F3;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #1976D2;
+            transform: scale(1.02);
+        }
+
+        .error {
+            color: #ff4d4d;
+            margin-top: 10px;
+        }
+
+        .success {
+            color: lightgreen;
+            margin-top: 10px;
+        }
+
+        /* 🔥 Side-by-side buttons */
+        .link-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .link-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .login-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .login-btn:hover {
+            background-color: #45a049;
+        }
+
+        .admin-btn {
+            border: 2px solid #00c6ff;
+            color: #00c6ff;
+            background: transparent;
+        }
+
+        .admin-btn:hover {
+            background: #00c6ff;
+            color: #000;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="register-container">
+
+    <h2>Student Registration 📝</h2>
+
+    <form th:action="@{/register}" th:object="${student}" method="post">
+
+        <input type="text" th:field="*{prn}" placeholder="PRN Number" required>
+        <input type="text" th:field="*{firstName}" placeholder="First Name" required>
+        <input type="text" th:field="*{lastName}" placeholder="Last Name" required>
+        <input type="email" th:field="*{email}" placeholder="Email Address" required>
+
+        <!-- Department -->
+        <select th:field="*{department}" required>
+            <option value="">Select Department</option>
+            <option value="Computer Engineering">Computer Engineering</option>
+            <option value="Electrical Engineering">Electrical Engineering</option>
+            <option value="Mechanical Engineering">Mechanical Engineering</option>
+            <option value="Civil Engineering">Civil Engineering</option>
+            <option value="Electronics & Telecommunication">Electronics & Telecommunication</option>
+        </select>
+
+        <!-- Year -->
+        <select th:field="*{year}" required>
+            <option value="">Select Current Year</option>
+            <option value="First Year">First Year</option>
+            <option value="Second Year">Second Year</option>
+            <option value="Third Year">Third Year</option>
+            <option value="Fourth Year">Fourth Year</option>
+        </select>
+
+        <input type="password" th:field="*{password}" placeholder="Create Password" required>
+        <input type="password" name="confirmPassword" placeholder="Re-enter Password" required>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <p class="error" th:text="${error}"></p>
+    <p class="success" th:text="${success}"></p>
+
+    <!-- 🔥 One row buttons -->
+    <div class="link-row">
+        <a th:href="@{/}" class="link-btn login-btn">
+            Student Login
+        </a>
+
+        <a th:href="@{/admin/login}" class="link-btn admin-btn">
+            Admin Login
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

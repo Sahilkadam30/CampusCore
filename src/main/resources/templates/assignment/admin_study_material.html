@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Admin Study Material</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#F6F0D7;
+    margin:0;
+    padding:0px;
+}
+
+.header {
+    background: #4F4D46;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+}
+.back-btn {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    padding: 8px 14px;
+    background: white;
+    color: #0d6efd;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.back-btn:hover{
+    background:#3e8e41;
+}
+
+/* Forms */
+form{
+    background:white;
+    padding:20px;
+    border-radius:8px;
+    width:420px;
+    margin:auto;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+input, select{
+    width:95%;
+    padding:8px;
+    margin-top:5px;
+    margin-bottom:15px;
+}
+
+/* Buttons */
+button{
+    padding:8px 14px;
+    background:#4CAF50;
+    border:none;
+    color:white;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#3e8e41;
+}
+
+/* Table */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+    background:white;
+}
+
+th, td{
+    padding:10px;
+    text-align:center;
+}
+
+th{
+    background:#e6d9a7;
+}
+
+tr:nth-child(even){
+    background:#f9f9f9;
+}
+
+/* Section headings */
+h2{
+    text-align:center;
+}
+
+hr{
+    margin:40px 0;
+}
+
+</style>
+
+</head>
+
+<body>
+<div class="header">
+    <a th:href="@{/admin/dashboard}" class="back-btn">← Back</a>
+    <h2>Admin Academic Management</h2>
+</div>
+<h2>Add Assignment</h2>
+
+<form th:action="@{/admin/saveAssignment}" 
+      method="post"
+      enctype="multipart/form-data">
+
+Subject
+<input type="text" name="subject"><br><br>
+
+Department:
+<select name="department">
+<option value="Computer Engineering">Computer Engineering</option>
+<option value="Electrical Engineering">Electrical Engineering</option>
+<option value="Mechanical Engineering">Mechanical Engineering</option>
+<option value="Civil Engineering">Civil Engineering</option>
+<option value="Electronics & Telecommunication">Electronics & Telecommunication</option>
+</select><br>
+
+Year:
+<select name="year">
+<option value="First Year">First Year</option>
+<option value="Second Year">Second Year</option>
+<option value="Third Year">Third Year</option>
+<option value="Fourth Year">Fourth Year</option>
+</select><br>
+
+
+Due Date
+<input type="date" name="dueDate"><br><br>
+
+PDF
+<input type="file" name="file"><br><br>
+
+<button type="submit">Upload Assignment</button>
+
+</form>
+
+<hr>
+
+<h2>Assignments List</h2>
+
+<table>
+
+<tr>
+<th>Subject</th>
+<th>Department</th>
+<th>Year</th>
+<th>Due Date</th>
+<th>Completed</th>
+<th>Students</th>
+</tr>
+
+<tr th:each="a : ${assignments}">
+
+<td th:text="${a.subject}"></td>
+<td th:text="${a.department}"></td>
+<td th:text="${a.year}"></td>
+<td th:text="${a.dueDate}"></td>
+<td th:text="${a.completedCount}"></td>
+
+<td>
+<a th:href="@{'/admin/assignmentCompleted/' + ${a.id}}">
+<button type="button">View Completed Students</button>
+</a>
+</td>
+<td>
+<a th:href="@{'/admin/deleteAssignment/' + ${a.id}}"
+   onclick="return confirm('Delete this assignment?')">
+
+<button type="button">Delete</button>
+
+</a>
+</td>
+</tr>
+
+</table>
+
+<hr>
+
+<h2>Add Notes</h2>
+
+<form th:action="@{/admin/saveNotes}" 
+      method="post"
+      enctype="multipart/form-data">
+
+Topic
+<input type="text" name="topic"><br><br>
+
+Department:
+<select name="department">
+<option value="Computer Engineering">Computer Engineering</option>
+<option value="Electrical Engineering">Electrical Engineering</option>
+<option value="Mechanical Engineering">Mechanical Engineering</option>
+<option value="Civil Engineering">Civil Engineering</option>
+<option value="Electronics & Telecommunication">Electronics & Telecommunication</option>
+</select><br>
+
+Year:
+<select name="year">
+<option value="First Year">First Year</option>
+<option value="Second Year">Second Year</option>
+<option value="Third Year">Third Year</option>
+<option value="Fourth Year">Fourth Year</option>
+</select><br>
+
+
+PDF
+<input type="file" name="file"><br><br>
+
+<button type="submit">Upload Notes</button>
+
+</form>
+
+
+<script th:if="${message}">
+
+Swal.fire({
+    toast: true,
+    position: 'top-end',
+    icon: 'success',
+    title: '[[${message}]]',
+    showConfirmButton: false,
+    timer: 2000
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>New Student Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: #F6F0D7;
+        font-family: Arial, sans-serif;
+        min-height: 100vh;
+        padding: 0px 0px;
+    }
+
+	.header {
+    background: #523826;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    margin-bottom:40px;
+}
+.back-btn {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    padding: 8px 14px;
+    background: white;
+    color: #0d6efd;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+    .container {
+        max-width: 900px;
+        margin: auto;
+    }
+
+    .back-btn {
+        display: inline-block;
+        padding: 8px 15px;
+        border: 1px solid #888;
+        background: white;
+        text-decoration: none;
+        color: #333;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        transition: 0.3s;
+    }
+
+    .back-btn:hover {
+        background: #eee;
+    }
+
+    .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        padding: 30px;
+        animation: fadeSlideUp 0.6s ease-out forwards;
+    }
+
+    h3 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    h4 {
+        margin-top: 25px;
+        margin-bottom: 8px;
+        color: #2e7d32;
+    }
+
+    hr {
+        margin-bottom: 15px;
+        border: none;
+        height: 1px;
+        background: #ddd;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 12px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        border-color: #4CAF50;
+        box-shadow: 0 0 4px rgba(76,175,80,0.4);
+    }
+
+    .alert-success {
+        background: #e6f4ea;
+        color: #2e7d32;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+    }
+
+    .alert-danger {
+        background: #fdecea;
+        color: #c62828;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    button, .secondary-btn {
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.3s;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    button {
+        background-color: #523826;
+        color: white;
+    }
+
+    button:hover {
+        background-color: #125aa0;
+    }
+
+    .secondary-btn {
+        background-color: #523826;
+        color: white;
+    }
+
+    .secondary-btn:hover {
+        background-color: #555;
+    }
+
+    /* Animation */
+    @keyframes fadeSlideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeOut {
+        to {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+    }
+
+    .fade-out {
+        animation: fadeOut 0.5s ease-in forwards;
+    }
+
+</style>
+</head>
+
+<body>
+<div class="header">
+	<a href="/dashboard"
+   			class="back-btn"
+   			onclick="return goBackWithAnimation(event)">
+    		← Back
+	</a>
+	<h1>New Student Registration</h1>
+</div>
+
+<div class="container">
+    <div class="card">
+
+        <h3>New Student Registration</h4>
+
+        <div th:if="${success}" class="alert-success">
+            <span th:text="${success}"></span>
+        </div>
+
+        <div th:if="${error}" class="alert-danger">
+            <span th:text="${error}"></span>
+        </div>
+
+        <form th:action="@{/save-student}" th:object="${student}" method="post">
+
+            <h4>College Details</h4>
+            <hr>
+
+            <input type="text" placeholder="College Name" th:field="*{collegeName}" required>
+            <input type="text" placeholder="College Code" th:field="*{collegeCode}" required>
+            <input type="text" placeholder="Address" th:field="*{collegeAddress}" required>
+            <input type="text" placeholder="City" th:field="*{collegeCity}" required>
+            <input type="text" placeholder="Pincode" th:field="*{collegePincode}" required>
+
+            <h4>Student Personal Details</h4>
+            <hr>
+
+            <input type="text" placeholder="PRN Number" th:field="*{prnNumber}" required>
+            <input type="text" placeholder="First Name" th:field="*{firstName}" required>
+            <input type="text" placeholder="Last Name" th:field="*{lastName}" required>
+
+            <select th:field="*{gender}" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <input type="date" th:field="*{dateOfBirth}" required>
+            <input type="text" placeholder="Phone" th:field="*{phone}" required>
+            <input type="email" placeholder="Email" th:field="*{email}" required>
+            <input type="text" placeholder="Address" th:field="*{address}" required>
+            <input type="text" placeholder="City" th:field="*{city}" required>
+            <input type="text" placeholder="State" th:field="*{state}" required>
+            <input type="text" placeholder="Pincode" th:field="*{pincode}" required>
+
+            <h4>Academic Details</h4>
+            <hr>
+
+            <input type="text" placeholder="10th School Name" th:field="*{tenthSchoolName}" required>
+            <input type="text" placeholder="10th School Address" th:field="*{tenthSchoolAddress}" required>
+            <input type="number" step="0.01" placeholder="10th Marks (%)" th:field="*{tenthMarks}" required>
+            <input type="text" placeholder="10th Grade" th:field="*{tenthGrade}" required>
+
+            <input type="text" placeholder="12th College Name" th:field="*{twelfthCollegeName}" required>
+            <input type="text" placeholder="12th College Address" th:field="*{twelfthCollegeAddress}" required>
+            <input type="number" step="0.01" placeholder="12th Marks (%)" th:field="*{twelfthMarks}" required>
+            <input type="text" placeholder="12th Grade" th:field="*{twelfthGrade}" required>
+
+            <select th:field="*{course}" required>
+            	<option value="">Select Department</option>
+				<option value="CSE">Computer Engineering</option>
+				<option value="IT">Electrical Engineering</option>
+				<option value="MECH">Mechanical Engineering</option>
+				<option value="civil">Civil Engineering</option>
+				<option value="entc">Electronics & Telecommunication</option>
+			</select>
+
+            <select th:field="*{year}" required>
+                <option value="">Select Year</option>
+                <option value="First Year">First Year</option>
+                <option value="Second Year">Second Year</option>
+                <option value="Third Year">Third Year</option>
+                <option value="Final Year">Final Year</option>
+            </select>
+
+            <select th:field="*{part}" required>
+                <option value="">Select Part</option>
+                <option value="First">First</option>
+                <option value="Second">Second</option>
+            </select>
+
+            <input type="date" th:field="*{admissionDate}">
+
+            <div class="btn-group">
+                <button type="submit">Register</button>
+                <a th:href="@{/dashboard}" class="secondary-btn">Back</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script th:inline="javascript">
+
+let successMsg = /*[[${success}]]*/ null;
+let errorMsg = /*[[${error}]]*/ null;
+
+if(successMsg){
+    Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: successMsg
+    });
+}
+
+if(errorMsg){
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: errorMsg
+    });
+}
+
+</script>
+
+</body>
+</html>

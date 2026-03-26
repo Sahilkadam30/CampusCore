@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Manage Announcements</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#F6F0D7;
+    margin:0;
+    padding:0px;
+}
+.header {
+    background: #4F4D46;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+}
+.back-btn {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    padding: 8px 14px;
+    background: white;
+    color: #0d6efd;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* page title */
+h2{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+h3{
+    margin-top:30px;
+}
+
+/* card container */
+.card{
+    background:white;
+    padding:25px;
+    border-radius:8px;
+    width:90%;
+    margin:auto;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* form layout */
+form{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+/* inputs */
+input, select, textarea{
+    padding:8px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    width:100%;
+}
+
+textarea{
+    min-height:80px;
+}
+
+/* checkbox */
+input[type="checkbox"]{
+    width:auto;
+}
+
+/* button group */
+.button-group{
+    display:flex;
+    gap:10px;
+    margin-top:10px;
+}
+
+/* buttons */
+button{
+    padding:10px 14px;
+    border:none;
+    border-radius:5px;
+    background:#4CAF50;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+button:hover{
+    background:#3e8e41;
+}
+
+/* table styling */
+table{
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th, td{
+    padding:10px;
+    text-align:center;
+}
+
+th{
+    background:#e6d9a7;
+}
+
+tr:nth-child(even){
+    background:#f9f9f9;
+}
+
+/* action links */
+a{
+    text-decoration:none;
+    font-weight:bold;
+    color:#2c3e50;
+}
+
+a:hover{
+    text-decoration:underline;
+}
+
+</style>
+
+<script>
+
+function sendToAll(){
+    document.getElementById("forAll").value = true;
+}
+
+function sendToDepartment(){
+    document.getElementById("forAll").value = false;
+}
+
+</script>
+
+</head>
+
+<body>
+
+<div class="header">
+    <a th:href="@{/admin/dashboard}" class="back-btn">← Back</a>
+    <h2>Announcement Management</h2>
+</div>
+
+
+<div class="card">
+
+<form th:action="@{/admin/save-announcement}"
+      th:object="${announcement}"
+      method="post"
+      enctype="multipart/form-data">
+
+Title
+<input type="text" th:field="*{title}" required>
+
+Message
+<textarea th:field="*{message}"></textarea>
+
+Department
+<select th:field="*{department}">
+<option value="">Select Department</option>
+<option value="Computer Engineering">Computer Engineering</option>
+<option value="Electrical Engineering">Electrical Engineering</option>
+<option value="Mechanical Engineering">Mechanical Engineering</option>
+<option value="Civil Engineering">Civil Engineering</option>
+<option value="Electronics & Telecommunication">Electronics & Telecommunication</option>
+</select>
+
+Year
+<select th:field="*{year}">
+<option value="">Select Year</option>
+<option value="First Year">First Year</option>
+<option value="Second Year">Second Year</option>
+<option value="Third Year">Third Year</option>
+<option value="Fourth Year">Fourth Year</option>
+</select>
+
+Priority
+<select th:field="*{priority}">
+<option value="">Select Priority</option>
+<option value="LOW">LOW</option>
+<option value="MEDIUM">MEDIUM</option>
+<option value="HIGH">HIGH</option>
+</select>
+
+Pinned
+<input type="checkbox" th:field="*{pinned}">
+
+Upload Notice PDF
+<input type="file" name="file">
+
+Expiry Date
+<input type="datetime-local" th:field="*{expiryDate}">
+
+<input type="hidden" th:field="*{forAllStudents}" id="forAll">
+
+<div class="button-group">
+
+<button type="submit" onclick="sendToDepartment()">
+Send Department Notice
+</button>
+
+<button type="submit" onclick="sendToAll()">
+Send To All Students
+</button>
+
+</div>
+
+</form>
+<h3>Previous Announcements</h3>
+
+<table border="1" width="100%" style="background:white">
+
+<tr>
+<th>Title</th>
+<th>Department</th>
+<th>Year</th>
+<th>Priority</th>
+<th>Pinned</th>
+<th>Date</th>
+<th>Actions</th>
+</tr>
+
+<tr th:each="a : ${announcements}">
+
+<td th:text="${a.title}"></td>
+
+<td th:text="${a.department}"></td>
+
+<td th:text="${a.year}"></td>
+
+<td th:text="${a.priority}"></td>
+
+<td th:text="${a.pinned ? 'Yes' : 'No'}"></td>
+
+<td th:text="${#temporals.format(a.createdAt,'dd MMM yyyy')}"></td>
+
+<td>
+
+<a th:href="@{/admin/edit-announcement/{id}(id=${a.id})}">
+Edit
+</a>
+
+|
+
+<a th:href="@{/admin/delete-announcement/{id}(id=${a.id})}"
+onclick="return confirm('Delete this announcement?')">
+Delete
+</a>
+
+</td>
+
+</tr>
+
+</table>
+</div>
+
+</body>
+</html>

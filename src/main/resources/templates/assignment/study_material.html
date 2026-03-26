@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Edit Student Result</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#F6F0D7;
+    margin:0;
+}
+
+/* Header */
+.header {
+    background: #4F4D46;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    position: relative;
+}
+
+.back-btn {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 8px 14px;
+    background: white;
+    color: #0d6efd;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Main container */
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 30px auto;
+}
+
+/* headings */
+h2, h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* table styling */
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    margin: 20px 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th,td{
+    padding:12px;
+    text-align:center;
+}
+
+th{
+    background:#e6d9a7;
+}
+
+tr:nth-child(even){
+    background:#f9f9f9;
+}
+
+/* buttons */
+button{
+    padding:6px 14px;
+    background:#4CAF50;
+    border:none;
+    color:white;
+    cursor:pointer;
+    border-radius:4px;
+}
+
+button:hover{
+    background:#3e8e41;
+}
+
+/* links */
+a{
+    text-decoration:none;
+    color:#2c3e50;
+    font-weight:bold;
+}
+
+a:hover{
+    text-decoration:underline;
+}
+
+/* completed text */
+.completed{
+    color:green;
+    font-weight:bold;
+}
+
+hr {
+    margin: 30px 0;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <a th:href="@{/dashboard}" class="back-btn">← Back</a>
+    <h1>Study Material</h1>
+</div>
+
+<div class="container">
+
+<h3>Assignments</h3>
+
+<table>
+<tr>
+<th>Subject</th>
+<th>Due Date</th>
+<th>File</th>
+<th>Action</th>
+</tr>
+
+<tr th:each="a : ${assignments}">
+<td th:text="${a.subject}"></td>
+<td th:text="${a.dueDate}"></td>
+
+<td>
+<a th:href="@{'/uploads/assignments/' + ${a.fileName}}">
+Download
+</a>
+</td>
+
+<td>
+
+<div th:if="${completedMap[a.id]}" class="completed">
+Completed ✔
+</div>
+
+<div th:unless="${completedMap[a.id]}">
+<a th:href="@{'/completeAssignment/' + ${a.id}}">
+<button>Complete</button>
+</a>
+</div>
+
+</td>
+
+</tr>
+</table>
+
+<hr>
+
+<h3>Notes</h3>
+
+<table>
+
+<tr>
+<th>Topic</th>
+<th>Download</th>
+</tr>
+
+<tr th:each="n : ${notes}">
+
+<td th:text="${n.topic}"></td>
+
+<td>
+<a th:href="@{'/uploads/notes/' + ${n.fileName}}">
+Download
+</a>
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</body>
+</html>

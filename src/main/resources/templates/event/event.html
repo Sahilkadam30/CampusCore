@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #F6F0D7;
+        margin: 0;
+        padding: 0px;
+    }
+
+    .header {
+    background: #4F4D46;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+    margin-bottom:30px;
+}
+.back-btn {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    padding: 8px 14px;
+    background: white;
+    color: #0d6efd;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+    /* Card Container */
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 45px;
+        justify-content: center;
+    }
+
+    /* Card Design */
+    .card {
+        background: white;
+        padding: 20px;
+        width: 700px;
+        border-radius: 15px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+    }
+
+    .card h3 {
+        margin: 0 0 10px 0;
+        color: black;
+        font-size: 18px;
+    }
+
+    .card p {
+        margin: 6px 0;
+        color: black;
+        font-size: 18px;
+    }
+
+    .card strong {
+        color: black;
+    }
+
+    /* Button */
+    .btn {
+        background: #2563eb;
+        color: white;
+        padding: 8px 14px;
+        text-decoration: none;
+        border-radius: 8px;
+        display: inline-block;
+        margin-top: 15px;
+        text-align: center;
+        font-weight: 500;
+        transition: background 0.2s ease;
+    }
+
+    .btn:hover {
+        background: #1e40af;
+    }
+
+    .btn.disabled {
+        background: #9ca3af;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .card-container {
+            justify-content: center;
+        }
+
+        .card {
+            width: 90%;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="header">
+	<a href="/dashboard"
+   			class="back-btn"
+   			onclick="return goBackWithAnimation(event)">
+    		← Back
+	</a>
+	<h2>Upcoming Events</h2>
+</div>
+
+<div class="card-container">
+    <div class="card" th:each="event : ${events}">
+
+        <h3>
+    		Event Name: 
+    		<span th:text="${event.eventName}"></span>
+		</h3>
+		<p>Event Venue: <span th:text="${event.venue}"></span></p>
+        <p>Event Date: <span th:text="${event.eventDate}"></span></p>
+        <p>Registration Last Date: <span th:text="${event.lastDateToApply}"></span></p>
+        <p>
+    		<strong>Details:</strong>
+    		<span th:text="${event.details}"></span>
+		</p>
+
+        <!-- Registration Closed -->
+        <div th:if="${T(java.time.LocalDate).now().isAfter(event.lastDateToApply)}">
+            <button class="btn disabled" disabled>Registration Closed</button>
+        </div>
+
+        <!-- If not closed -->
+        <div th:unless="${T(java.time.LocalDate).now().isAfter(event.lastDateToApply)}">
+
+            <!-- Already Registered -->
+            <div th:if="${@eventService.alreadyRegistered(prn, event.id)}">
+                <button class="btn disabled" disabled>Already Registered</button>
+            </div>
+
+            <!-- Not Registered -->
+            <div th:unless="${@eventService.alreadyRegistered(prn, event.id)}">
+                <a th:href="@{'/registerEvent/' + ${event.id}}" class="btn">
+                    Register
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

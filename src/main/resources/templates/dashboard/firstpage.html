@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusCore</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+        background: #000;
+        overflow: hidden;
+        color: white;
+    }
+
+    .intro {
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        background: radial-gradient(circle at center, #0f2027, #000000 70%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .logo {
+        font-size: 70px;
+        font-weight: bold;
+        letter-spacing: 3px;
+        animation: zoomIn 1.5s ease forwards;
+    }
+
+    .tagline {
+        margin-top: 15px;
+        font-size: 20px;
+        color: #aaa;
+        animation: fadeIn 2s ease forwards;
+    }
+
+    .sweep {
+        position: absolute;
+        bottom: 35%;
+        height: 4px;
+        width: 60%;
+        background: linear-gradient(to right, transparent, #00bfff, transparent);
+        animation: sweepLine 2s ease-in-out forwards;
+    }
+
+    @keyframes zoomIn {
+        0% { opacity: 0; transform: scale(0.6); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes sweepLine {
+        0% { opacity: 0; }
+        50% { opacity: 1; }
+        100% { opacity: 0; }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="intro">
+    <div class="logo">CampusCore</div>
+    <div class="sweep"></div>
+    <div class="tagline">Empowering Minds, Shaping Futures.</div>
+</div>
+
+<script>
+    // Redirect after 3 seconds
+    setTimeout(() => {
+        window.location.href = "/dashboard";
+    }, 3000);
+</script>
+
+</body>
+</html>

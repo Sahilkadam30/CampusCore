@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<title>Student Attendance</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#F6F0D7;
+    margin:0;
+    padding:0px;
+}
+.header {
+    background: #4F4D46;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+}
+.back-btn {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    padding: 8px 14px;
+    background: white;
+    color: #0d6efd;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+/* main container */
+.container{
+    width:90%;
+    margin:auto;
+}
+
+/* header */
+.header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+/* cards */
+.card{
+    background:white;
+    padding:20px;
+    margin-bottom:25px;
+    border-radius:8px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* form styling */
+form{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+}
+
+select, button{
+    padding:8px;
+}
+
+/* button */
+button{
+    background:#4CAF50;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#3e8e41;
+}
+
+/* warning message */
+.warning{
+    background:#ffe5e5;
+    color:red;
+    padding:10px;
+    border-radius:6px;
+    margin-bottom:10px;
+    font-weight:bold;
+}
+
+/* table */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th, td{
+    padding:10px;
+    text-align:center;
+}
+
+th{
+    background:#e6d9a7;
+}
+
+tr:nth-child(even){
+    background:#f9f9f9;
+}
+
+/* percentage colors */
+.low{
+    color:red;
+    font-weight:bold;
+}
+
+.medium{
+    color:orange;
+    font-weight:bold;
+}
+
+.high{
+    color:green;
+    font-weight:bold;
+}
+
+/* graph size */
+#attendanceChart{
+    width:100%;
+    max-width:1000px;
+    height:450px;
+    margin:auto;
+    display:block;
+}
+
+</style>
+</head>
+
+<body>
+<div class="header">
+	<a href="/dashboard"
+   			class="back-btn"
+   			onclick="return goBackWithAnimation(event)">
+    		← Back
+	</a>
+	<h1>Student Attendance Dashboard</h1>
+</div>
+<div class="container">
+
+<!-- Month + Year Filter -->
+
+<div class="card">
+
+<form method="get" action="/attendance">
+
+<label>Select Month:</label>
+
+<select name="month">
+
+<option value="">All Months</option>
+
+<option th:selected="${param.month=='January'}">January</option>
+<option th:selected="${param.month=='February'}">February</option>
+<option th:selected="${param.month=='March'}">March</option>
+<option th:selected="${param.month=='April'}">April</option>
+<option th:selected="${param.month=='May'}">May</option>
+<option th:selected="${param.month=='June'}">June</option>
+<option th:selected="${param.month=='July'}">July</option>
+<option th:selected="${param.month=='August'}">August</option>
+<option th:selected="${param.month=='September'}">September</option>
+<option th:selected="${param.month=='October'}">October</option>
+<option th:selected="${param.month=='November'}">November</option>
+<option th:selected="${param.month=='December'}">December</option>
+
+</select>
+
+<label>Year:</label>
+
+<select name="year">
+
+<option value="">All Years</option>
+
+<option th:selected="${param.year=='First Year'}">First Year</option>
+<option th:selected="${param.year=='Second Year'}">Second Year</option>
+<option th:selected="${param.year=='Third Year'}">Third Year</option>
+<option th:selected="${param.year=='Final Year'}">Final Year</option>
+
+</select>
+
+<button type="submit">View</button>
+
+</form>
+
+</div>
+
+
+<!-- Low Attendance Warning -->
+
+<div th:each="a : ${attendance}">
+<div th:if="${a.percentage < 75}" class="warning">
+⚠ Low Attendance in <b th:text="${a.subject}"></b>
+</div>
+</div>
+
+
+<!-- Attendance Table -->
+
+<div class="card">
+
+<h3>Attendance Details</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Subject</th>
+<th>Total Lectures</th>
+<th>Attended Lectures</th>
+<th>Percentage</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr th:each="a : ${attendance}">
+
+<td th:text="${a.subject}"></td>
+
+<td th:text="${a.totalClasses}"></td>
+
+<td th:text="${a.attendedClasses}"></td>
+
+<td th:text="${#numbers.formatDecimal(a.percentage,1,2) + '%'}"
+th:class="${a.percentage < 30} ? 'low' :
+(${a.percentage < 75} ? 'medium' : 'high')">
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- Attendance Graph -->
+
+<div class="card">
+
+<h3>Attendance Graph</h3>
+
+<canvas id="attendanceChart"></canvas>
+
+</div>
+
+</div>
+
+
+<!-- Chart Script -->
+
+<script th:inline="javascript">
+
+let subjects = /*[[${attendance.![subject]}]]*/ [];
+let percentages = /*[[${attendance.![percentage]}]]*/ [];
+
+if(subjects.length > 0){
+
+new Chart(document.getElementById("attendanceChart"), {
+
+type: 'bar',
+
+data: {
+labels: subjects,
+datasets: [{
+label: "Attendance Percentage",
+data: percentages
+}]
+},
+
+options:{
+scales:{
+y:{
+beginAtZero:true,
+max:100
+}
+}
+}
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

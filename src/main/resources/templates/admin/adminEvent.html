@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Event Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F6F0D7;
+            margin: 0;
+            padding: 0px;
+        }
+
+        .header {
+    background: #BA7B1B;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+    margin-bottom:30px;
+}
+.back-btn {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    padding: 8px 14px;
+    background: white;
+    color: #0d6efd;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+        /* ===== Form Card ===== */
+        .form-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .form-card {
+            background: white;
+            padding: 25px;
+            width: 450px;
+            border-radius: 15px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 16px;
+            color:black;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 4px rgba(37, 99, 235, 0.3);
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #BA7B1B;
+            color: white;
+            font-size: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: #BA7B1B;
+        }
+
+        /* ===== Event Cards ===== */
+        .event-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            margin-bottom:50px;
+        }
+
+        .event-card {
+            background: white;
+            padding: 20px;
+            width: 300px;
+            border-radius: 15px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            transition: 0.2s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+        }
+
+        .event-card h3 {
+            margin-top: 0;
+            color: #222;
+        }
+
+        .event-card p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .event-card span {
+            font-weight: bold;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 7px 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            color: white;
+        }
+
+        .view-btn {
+            background-color: #BA7B1B;
+        }
+
+        .view-btn:hover {
+            background-color: #1e40af;
+        }
+
+        .delete-btn {
+            background-color: #dc2626;
+            margin-left: 8px;
+        }
+
+        .delete-btn:hover {
+            background-color: #b91c1c;
+        }
+
+        @media (max-width: 768px) {
+            .form-card {
+                width: 90%;
+            }
+
+            .event-card {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <a th:href="@{/admin/dashboard}" class="back-btn">← Back</a>
+    <h2>Admin Event Management</h2>
+</div>
+
+<!-- ===== Add Event Form ===== -->
+<div class="form-container">
+    <div class="form-card">
+        <form th:action="@{/admin/addEvent}" 
+              th:object="${event}" method="post">
+
+            <div class="form-group">
+                <label>Event Name</label>
+                <input type="text" th:field="*{eventName}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Venue</label>
+                <input type="text" th:field="*{venue}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Event Date</label>
+                <input type="date" th:field="*{eventDate}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Last Date to Apply</label>
+                <input type="date" th:field="*{lastDateToApply}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Event Details</label>
+                <textarea th:field="*{details}"
+                          rows="4"
+                          placeholder="Enter brief explanation about the event"
+                          required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Add Event</button>
+        </form>
+    </div>
+</div>
+
+<hr style="margin:40px 0;">
+
+<!-- ===== Event List ===== -->
+<div class="event-container">
+    <div class="event-card" th:each="event : ${events}">
+
+        <h3 th:text="${event.eventName}"></h3>
+
+        <p>
+            Registered Students:
+            <span th:text="${#lists.size(event.registrations)}"></span>
+        </p>
+
+        <a th:href="@{'/admin/event/' + ${event.id} + '/students'}"
+           class="btn view-btn">
+            View Students
+        </a>
+
+        <a th:href="@{'/admin/deleteEvent/' + ${event.id}}"
+           class="btn delete-btn">
+            Delete
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registered Students</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F6F0D7;
+            margin: 0;
+            padding: 0px;
+        }
+
+        .header {
+    background: #BA7B1B;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+    margin-bottom:30px;
+}
+
+        .table-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .table-card {
+            background: white;
+            padding: 25px;
+            width: 600px;
+            border-radius: 15px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #BA7B1B;
+            color: white;
+            font-size: 18px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            font-weight: 600;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #ddd;
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #f3f4f6;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 14px;
+            background-color: #BA7B1B;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+
+        .back-btn:hover {
+            background-color: #1e40af;
+        }
+
+        .back-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .table-card {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+	<h2>Registered Students</h2>
+</div>
+
+
+<div class="table-container">
+    <div class="table-card">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>PRN</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="student : ${students}">
+                    <td th:text="${student.prn}"></td>
+                    <td th:text="${student.name}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<div class="back-container">
+    <a href="/admin/events" class="back-btn">Back</a>
+</div>
+
+</body>
+</html>

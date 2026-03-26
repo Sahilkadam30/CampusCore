@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#F6F0D7;
+    margin:0;
+    padding:0px 20px;
+}
+
+.header {
+    background: #4F4D46;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+}
+.back-btn {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    padding: 8px 14px;
+    background: white;
+    color: #0d6efd;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+/* Page Title */
+h2{
+    text-align:center;
+    margin-bottom:40px;
+    font-weight:bold;
+}
+
+/* Layout for 3 cards */
+.card-layout{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px,1fr));
+    gap:40px;   /* space between cards */
+}
+
+/* Card Style */
+.section{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* Section Titles */
+.section h2,
+.section h3{
+    text-align:center;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+/* Inputs */
+input,select{
+    padding:8px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    margin:6px 0;
+}
+
+/* Table */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:8px;
+    text-align:center;
+}
+
+th{
+    background:#2563eb;
+    color:white;
+}
+
+/* Buttons */
+button{
+    padding:8px 14px;
+    background:#2563eb;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+button:hover{
+    background:#1e4ed8;
+}
+
+.edit-btn{
+    background:#4CAF50;
+    color:white;
+    padding:6px 12px;
+    border-radius:5px;
+    text-decoration:none;
+    font-size:13px;
+}
+
+.edit-btn:hover{
+    background:#3e8e41;
+}
+
+.delete-btn{
+    background:#e53935;
+    color:white;
+    padding:6px 12px;
+    border-radius:5px;
+    text-decoration:none;
+    font-size:13px;
+}
+
+.delete-btn:hover{
+    background:#c62828;
+}
+
+.download-btn{
+    background:#1976D2;
+    color:white;
+    padding:6px 12px;
+    border-radius:5px;
+    text-decoration:none;
+    font-size:13px;
+}
+
+.download-btn:hover{
+    background:#0f5db5;
+}
+
+/* spacing between buttons */
+td a{
+    margin-right:6px;
+}
+</style>
+</head>
+<body>
+<div class="header">
+    <a th:href="@{/admin/dashboard}" class="back-btn">← Back</a>
+    <h2>Admin Academic Management</h2>
+</div>
+
+    <div class="section">
+    <h2>Create Exam Schedule</h2>
+
+    <form th:action="@{/admin/addExam}" method="post">
+
+        <!-- Department Dropdown -->
+        <label><b>Select Department:</b></label>
+        <select name="department" required>
+            <option value="">Select Department</option>
+            <option>Computer Engineering</option>
+            <option>Mechanical Engineering</option>
+            <option>Electrical Engineering</option>
+            <option>Civil Engineering</option>
+            <option>Electronics & Telecommunication</option>
+        </select>
+
+        <br><br>
+
+        <!-- Exam Table -->
+        <table>
+            <tr>
+                <th>Subject Name</th>
+                <th>Exam Date</th>
+                <th>First Year</th>
+                <th>Second Year</th>
+                <th>Third Year</th>
+                <th>Fourth Year</th>
+            </tr>
+
+            <!-- Row 1 -->
+            <tr>
+                <td><input type="text" name="subjects[0].subjectName" required></td>
+                <td><input type="date" name="subjects[0].examDate" required></td>
+                <td><input type="checkbox" name="subjects[0].year" value="First Year"></td>
+                <td><input type="checkbox" name="subjects[0].year" value="Second Year"></td>
+                <td><input type="checkbox" name="subjects[0].year" value="Third Year"></td>
+                <td><input type="checkbox" name="subjects[0].year" value="Fourth Year"></td>
+            </tr>
+
+            <!-- Row 2 -->
+            <tr>
+                <td><input type="text" name="subjects[1].subjectName"></td>
+                <td><input type="date" name="subjects[1].examDate"></td>
+                <td><input type="checkbox" name="subjects[1].year" value="First Year"></td>
+                <td><input type="checkbox" name="subjects[1].year" value="Second Year"></td>
+                <td><input type="checkbox" name="subjects[1].year" value="Third Year"></td>
+                <td><input type="checkbox" name="subjects[1].year" value="Fourth Year"></td>
+            </tr>
+
+            <!-- Row 3 -->
+            <tr>
+                <td><input type="text" name="subjects[2].subjectName"></td>
+                <td><input type="date" name="subjects[2].examDate"></td>
+                <td><input type="checkbox" name="subjects[2].year" value="First Year"></td>
+                <td><input type="checkbox" name="subjects[2].year" value="Second Year"></td>
+                <td><input type="checkbox" name="subjects[2].year" value="Third Year"></td>
+                <td><input type="checkbox" name="subjects[2].year" value="Fourth Year"></td>
+            </tr>
+
+            <!-- Row 4 -->
+            <tr>
+                <td><input type="text" name="subjects[3].subjectName"></td>
+                <td><input type="date" name="subjects[3].examDate"></td>
+                <td><input type="checkbox" name="subjects[3].year" value="First Year"></td>
+                <td><input type="checkbox" name="subjects[3].year" value="Second Year"></td>
+                <td><input type="checkbox" name="subjects[3].year" value="Third Year"></td>
+                <td><input type="checkbox" name="subjects[3].year" value="Fourth Year"></td>
+            </tr>
+
+            <!-- Row 5 -->
+            <tr>
+                <td><input type="text" name="subjects[4].subjectName"></td>
+                <td><input type="date" name="subjects[4].examDate"></td>
+                <td><input type="checkbox" name="subjects[4].year" value="First Year"></td>
+                <td><input type="checkbox" name="subjects[4].year" value="Second Year"></td>
+                <td><input type="checkbox" name="subjects[4].year" value="Third Year"></td>
+                <td><input type="checkbox" name="subjects[4].year" value="Fourth Year"></td>
+            </tr>
+        </table>
+
+        <br>
+        <button type="submit">Save Exam Schedule</button>
+    </form>
+</div>
+
+<a href="/admin/exam-timetable">
+<button>📅 Show Exam Timetable</button>
+</a>
+
+<div class="section center-section">
+
+<h3>Add Result</h3>
+
+<form th:action="@{/admin/addResult}" th:object="${result}" method="post">
+
+PRN: <input type="number" th:field="*{prn}"><br>
+
+Year:
+<select th:field="*{year}">
+<option value="First Year">First Year</option>
+<option value="Second Year">Second Year</option>
+<option value="Third Year">Third Year</option>
+<option value="Fourth Year">Fourth Year</option>
+</select><br>
+
+Semester:
+<select th:field="*{semester}">
+<option value="Sem 1">Sem 1</option>
+<option value="Sem 2">Sem 2</option>
+</select><br>
+
+Department:
+<select th:field="*{department}">
+<option value="Computer">Computer Engineering</option>
+<option value="IT">Mechanical Engineering</option>
+<option value="Mechanical">Electrical Engineering</option>
+<option value="Civil">Civil Engineering</option>
+<option value="Electronics & Telecommunication">Electronics & Telecommunication</option>
+</select><br>
+
+Subject 1: <input type="text" th:field="*{subject1}">
+Marks: <input type="number" th:field="*{marks1}" class="marks"><br>
+
+Subject 2: <input type="text" th:field="*{subject2}">
+Marks: <input type="number" th:field="*{marks2}" class="marks"><br>
+
+Subject 3: <input type="text" th:field="*{subject3}">
+Marks: <input type="number" th:field="*{marks3}" class="marks"><br>
+
+Subject 4: <input type="text" th:field="*{subject4}">
+Marks: <input type="number" th:field="*{marks4}" class="marks"><br>
+
+Subject 5: <input type="text" th:field="*{subject5}">
+Marks: <input type="number" th:field="*{marks5}" class="marks"><br>
+
+Total: <input type="number" th:field="*{total}" id="total" readonly><br>
+
+Percentage: <input type="text" th:field="*{percentage}" id="percentage" readonly>
+
+<button type="submit">Add Result</button>
+</form>
+</div>
+
+<hr>
+
+<div class="section center-section">
+<h3>Add Syllabus</h3>
+
+<form th:action="@{/admin/addSyllabus}" th:object="${syllabusObj}" method="post">
+
+Semester:
+<select th:field="*{semester}">
+<option value="Sem 1">Sem 1</option>
+<option value="Sem 2">Sem 2</option>
+</select><br>
+
+Department:
+<select th:field="*{department}">
+<option value="Computer">Computer Engineering</option>
+<option value="IT">Mechanical Engineering</option>
+<option value="Mechanical">Electrical Engineering</option>
+<option value="Civil">Civil Engineering</option>
+<option value="Electronics & Telecommunication">Electronics & Telecommunication</option>
+</select><br>
+
+Subject 1: <input type="text" th:field="*{subject1}"><br>
+Subject 2: <input type="text" th:field="*{subject2}"><br>
+Subject 3: <input type="text" th:field="*{subject3}"><br>
+Subject 4: <input type="text" th:field="*{subject4}"><br>
+Subject 5: <input type="text" th:field="*{subject5}"><br>
+
+<button type="submit">Add Syllabus</button>
+</form>
+</div>
+
+<div class="section center-section" id="resultSection">
+
+<h3>🔎 Search Student Result by PRN</h3>
+
+<form method="get" action="/admin/searchResult#resultSection">
+PRN Number:
+<input type="number" name="prn" required>
+
+<button type="submit">Search</button>
+</form>
+
+<br>
+
+<table th:if="${searchResults != null}">
+<thead>
+<tr>
+<th>PRN</th>
+<th>Year</th>
+<th>Semester</th>
+<th>Department</th>
+<th>Total</th>
+<th>Percentage</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody>
+<tr th:each="r : ${searchResults}">
+
+<td th:text="${r.prn}"></td>
+<td th:text="${r.year}"></td>
+<td th:text="${r.semester}"></td>
+<td th:text="${r.department}"></td>
+<td th:text="${r.total}"></td>
+<td th:text="${r.percentage + '%'}"></td>
+
+<td>
+
+<a th:href="@{/admin/editResult/{id}(id=${r.id})}" class="edit-btn">
+Edit
+</a>
+
+<a th:href="@{/admin/deleteResult/{id}(id=${r.id})}" class="delete-btn"
+onclick="return confirm('Delete this result?')">
+Delete
+</a>
+
+<a th:href="@{/academic/result/pdf/{id}(id=${r.id})}" class="download-btn">
+PDF
+</a>
+
+</td>
+
+</tr>
+</tbody>
+</table>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div th:if="${success}">
+<script th:inline="javascript">
+
+    var message = /*[[${success}]]*/ "Success";
+
+    Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: message,
+        timer: 2000,
+        showConfirmButton: false
+    });
+
+</script>
+</div>
+</body>
+</html>

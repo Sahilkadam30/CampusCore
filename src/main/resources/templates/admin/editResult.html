@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Edit Student Result</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: Arial, sans-serif;
+    background-color:#F6F0D7;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.card{
+    background:white;
+    width:500px;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+label{
+    font-weight:bold;
+    display:block;
+    margin-top:12px;
+}
+
+input{
+    width:100%;
+    padding:8px;
+    margin-top:4px;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
+.subject-row{
+    display:flex;
+    gap:10px;
+    margin-top:8px;
+}
+
+.subject-row input{
+    flex:1;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    margin-top:20px;
+    background:#1976D2;
+    border:none;
+    color:white;
+    border-radius:6px;
+    font-size:15px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0f5db5;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Edit Student Result</h2>
+
+<form th:action="@{/admin/updateResult}" th:object="${editResult}" method="post">
+
+<input type="hidden" th:field="*{id}">
+
+<label>PRN</label>
+<input type="number" th:field="*{prn}">
+
+<label>Subject 1</label>
+<div class="subject-row">
+<input type="text" th:field="*{subject1}" placeholder="Subject">
+<input type="number" th:field="*{marks1}" placeholder="Marks">
+</div>
+
+<label>Subject 2</label>
+<div class="subject-row">
+<input type="text" th:field="*{subject2}" placeholder="Subject">
+<input type="number" th:field="*{marks2}" placeholder="Marks">
+</div>
+
+<label>Subject 3</label>
+<div class="subject-row">
+<input type="text" th:field="*{subject3}" placeholder="Subject">
+<input type="number" th:field="*{marks3}" placeholder="Marks">
+</div>
+
+<label>Subject 4</label>
+<div class="subject-row">
+<input type="text" th:field="*{subject4}" placeholder="Subject">
+<input type="number" th:field="*{marks4}" placeholder="Marks">
+</div>
+
+<label>Subject 5</label>
+<div class="subject-row">
+<input type="text" th:field="*{subject5}" placeholder="Subject">
+<input type="number" th:field="*{marks5}" placeholder="Marks">
+</div>
+
+<button type="submit">Update Result</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

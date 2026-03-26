@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Event Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F6F0D7;
+            margin: 0;
+            padding: 0;
+        }
+
+.header {
+    background: #4F4D46;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+    margin-bottom:30px;
+}
+.back-btn {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    padding: 8px 14px;
+    background: white;
+    color: #0d6efd;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+        /* Center Container */
+        .form-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        /* Card Style */
+        .form-card {
+            background: white;
+            padding: 30px;
+            width: 400px;
+            border-radius: 15px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #444;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 4px rgba(37, 99, 235, 0.3);
+        }
+
+        input[readonly] {
+            background-color: #f3f4f6;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #2563eb;
+            color: white;
+            font-size: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #1e40af;
+        }
+
+        @media (max-width: 500px) {
+            .form-card {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+	<a href="/dashboard"
+   			class="back-btn"
+   			onclick="return goBackWithAnimation(event)">
+    		← Back
+	</a>
+	<h2>Upcoming Events</h2>
+</div>
+
+<div class="form-container">
+    <div class="form-card">
+
+        <form th:action="@{'/registerEvent/' + ${eventId}}"
+              th:object="${registration}" method="post">
+
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" th:field="*{name}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>PRN</label>
+                <input type="number" th:field="*{prn}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Year</label>
+                <input type="text" th:field="*{year}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Branch</label>
+                <input type="text" th:field="*{branch}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" th:field="*{email}" required>
+            </div>
+
+            <button type="submit">Submit Registration</button>
+
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

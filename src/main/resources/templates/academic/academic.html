@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Academic Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F6F0D7;
+            margin: 0;
+            padding: 0px;
+            
+        }
+
+        .header {
+    background: #30608C;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+    margin-bottom:30px;
+}
+.back-btn {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    padding: 8px 14px;
+    background: white;
+    color: #0d6efd;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+        hr {
+            margin: 50px 0;
+            border: none;
+            height: 1px;
+            background-color: #30608C;
+        }
+
+        /* Card Section */
+        .section-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            margin-left: 150px;
+            margin-right: 150px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        thead {
+            background-color: #30608C;
+            color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:hover {
+            background-color: #f3f4f6;
+        }
+
+        /* Form Styling */
+        form {
+            margin-top: 15px;
+        }
+
+        select {
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        button {
+            padding: 8px 15px;
+            border: none;
+            background-color: #30608C;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #30608C;
+        }
+
+        /* Result Table Styling */
+        .result-table th {
+            background-color: #30608C;
+            color: white;
+        }
+
+        /* Syllabus List */
+        ul {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 6px;
+        }
+
+		.download-btn{
+    	display:inline-block;
+   	 	margin-top:10px;
+    	padding:8px 14px;
+    	background:#2d89ef;
+    	color:white;
+    	text-decoration:none;
+    	border-radius:5px;
+		}
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+	<a href="/dashboard"
+   			class="back-btn"
+   			onclick="return goBackWithAnimation(event)">
+    		← Back
+	</a>
+	<h2>Exams results & Syllabus</h2>
+</div>
+<!-- ================= Upcoming Exams ================= -->
+<div class="section-card">
+    <h2>📅 Upcoming Exams</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Subject</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="exam : ${exams}">
+                <td th:text="${exam.year}"></td>
+                <td th:text="${exam.subjectName}"></td>
+                <td th:text="${exam.examDate}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ================= View Result ================= -->
+<div class="section-card">
+    <h2>📊 View Result</h2>
+
+    <form method="get" action="/academic">
+        <select name="year">
+            <option value="">Select Year</option>
+            <option value="First Year">First Year</option>
+            <option value="Second Year">Second Year</option>
+            <option value="Third Year">Third Year</option>
+            <option value="Fourth Year">Fourth Year</option>
+        </select>
+
+        <button type="submit">View</button>
+    </form>
+
+    <div th:each="result : ${results}">
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td th:text="${result.subject1}"></td><td th:text="${result.marks1}"></td></tr>
+                <tr><td th:text="${result.subject2}"></td><td th:text="${result.marks2}"></td></tr>
+                <tr><td th:text="${result.subject3}"></td><td th:text="${result.marks3}"></td></tr>
+                <tr><td th:text="${result.subject4}"></td><td th:text="${result.marks4}"></td></tr>
+                <tr><td th:text="${result.subject5}"></td><td th:text="${result.marks5}"></td></tr>
+                <tr>
+                    <th>Total</th>
+                    <th th:text="${result.total}"></th>
+                </tr>
+                <tr>
+        			<th>Percentage</th>
+        			<th th:text="${result.percentage + '%'}"></th>
+    			</tr>
+            </tbody>
+        </table>
+        
+        <a th:href="@{/academic/result/pdf/{id}(id=${result.id})}" 
+   			class="download-btn">
+   			Download Result PDF
+		</a>
+    </div>
+</div>
+
+<!-- ================= Syllabus ================= -->
+<div class="section-card">
+    <h2>📘 Syllabus</h2>
+
+    <form method="get" action="/academic">
+        <select name="semester">
+            <option value="">Select Semester</option>
+            <option value="Sem 1">Sem 1</option>
+            <option value="Sem 2">Sem 2</option>
+        </select>
+
+        <select name="department">
+            <option value="">Select Department</option>
+            <option value="Computer">Computer Engineering</option>
+            <option value="electrical">Electrical Engineering</option>
+            <option value="Mechanical">Mechanical Engineering</option>
+            <option value="civil">Civil Engineering</option>
+            <option value="Electronics & Telecommunication">Electronics & Telecommunication</option>
+        </select>
+
+        <button type="submit">View</button>
+    </form>
+
+    <div th:each="s : ${syllabus}">
+        <ul>
+            <li th:text="${s.subject1}"></li>
+            <li th:text="${s.subject2}"></li>
+            <li th:text="${s.subject3}"></li>
+            <li th:text="${s.subject4}"></li>
+            <li th:text="${s.subject5}"></li>
+        </ul>
+    </div>
+</div>
+
+
+
+</body>
+</html>

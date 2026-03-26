@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Edit Exam</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: Arial, sans-serif;
+    background-color:#F6F0D7;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.card{
+    background:white;
+    width:420px;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    margin-top:12px;
+    font-weight:bold;
+}
+
+input, select{
+    width:100%;
+    padding:8px;
+    margin-top:5px;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
+input:focus, select:focus{
+    outline:none;
+    border-color:#1976D2;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    margin-top:20px;
+    background:#1976D2;
+    border:none;
+    color:white;
+    border-radius:6px;
+    font-size:15px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0f5db5;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Edit Exam Schedule</h2>
+
+<form th:action="@{/admin/updateExam}" th:object="${exam}" method="post">
+
+<input type="hidden" th:field="*{id}">
+
+<label>Department</label>
+<input type="text" th:field="*{department}">
+
+<label>Year</label>
+<select th:field="*{year}">
+<option value="First Year">First Year</option>
+<option value="Second Year">Second Year</option>
+<option value="Third Year">Third Year</option>
+<option value="Fourth Year">Fourth Year</option>
+</select>
+
+<label>Subject Name</label>
+<input type="text" th:field="*{subjectName}">
+
+<label>Exam Date</label>
+<input type="date" th:field="*{examDate}">
+
+<button type="submit">Update Exam</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

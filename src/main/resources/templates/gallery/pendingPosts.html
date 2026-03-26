@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin - Manage Posts</title>
+    
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #F6F0D7;
+        margin: 0;
+        padding:0;
+    }
+
+    .header {
+    background: #4F4D46;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+    margin-bottom:30px;
+}
+.back-btn {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    padding: 8px 14px;
+    background: white;
+    color: #0d6efd;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+    /* Left aligned container */
+    .container {
+         padding: 20px;
+    padding-bottom: 140px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 80px;
+    }
+
+    .card {
+        background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .card h4 {
+        margin: 0 0 10px 0;
+        font-size: 18px;
+    }
+
+    .status {
+        font-weight: bold;
+    }
+
+    .approved {
+        color: #28a745;
+    }
+
+    .pending {
+        color: #dc3545;
+    }
+
+    .image-wrapper {
+    width: 350px;
+    aspect-ratio: 1 / 1;   /* perfect square */
+    overflow: hidden;
+    border-radius: 12px;
+    margin: 15px 0;
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+    .caption {
+        margin-bottom: 15px;
+        width: 50%;
+    }
+
+    .update-section {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .update-section input {
+    	width: 350px;
+    	padding: 6px 8px;
+    	font-size: 14px;
+    	border-radius: 6px;
+    	border: 1px solid #ccc;
+    }
+
+    button {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.2s ease;
+    }
+
+    .approve {
+        background: #28a745;
+        color: white;
+        margin-bottom: 10px;
+    }
+
+    .approve:hover {
+        background: #218838;
+    }
+
+    .update {
+        background: #007bff;
+        color: white;
+    }
+
+    .update:hover {
+        background: #0056b3;
+    }
+
+    .delete {
+        background: #dc3545;
+        color: white;
+        margin-top: 15px;
+    }
+
+    .delete:hover {
+        background: #c82333;
+    }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <a th:href="@{/admin/dashboard}" class="back-btn">← Back</a>
+    <h2>Manage Posts</h2>
+</div>
+
+<div class="container">
+
+<div th:each="post : ${posts}" class="card">
+
+    <h4 th:text="${post.studentName}"></h4>
+
+    <p>
+        Status:
+        <span class="status"
+              th:classappend="${post.approved} ? 'approved' : 'pending'"
+              th:text="${post.approved ? 'Approved' : 'Pending'}">
+        </span>
+    </p>
+
+    <div class="image-wrapper">
+    	<img th:src="@{'/image/' + ${post.id}}">
+	</div>
+
+    <p class="caption">
+        <b>Caption:</b>
+        <span th:text="${post.caption}"></span>
+    </p>
+
+    <!-- Approve -->
+    <form th:if="${!post.approved}"
+          th:action="@{'/admin/approve/' + ${post.id}}"
+          method="post">
+        <button class="approve">Approve</button>
+    </form>
+
+    <!-- Update -->
+    <form th:action="@{'/admin/update/' + ${post.id}}" method="post">
+        <div class="update-section">
+            <input type="text" name="caption" placeholder="Enter new caption">
+            <button class="update">Update</button>
+        </div>
+    </form>
+
+    <!-- Delete -->
+    <form th:action="@{'/admin/delete/' + ${post.id}}" method="post">
+        <button class="delete"
+                onclick="return confirm('Are you sure to delete?');">
+            Delete
+        </button>
+    </form>
+
+</div>
+</div>
+
+</body>
+</html>

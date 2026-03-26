@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Exam Timetable</title>
+
+<style>
+
+body{
+font-family:Arial;
+padding:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:10px;
+text-align:center;
+}
+
+th{
+background:#2c3e50;
+color:white;
+}
+
+input,select{
+padding:5px;
+}
+
+button{
+padding:6px 12px;
+border:none;
+background:#27ae60;
+color:white;
+cursor:pointer;
+}
+
+.delete{
+background:red;
+padding:6px 12px;
+color:white;
+text-decoration:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>📅 Exam Timetable (Inline Edit)</h2>
+
+<table>
+
+<tr>
+<th>Department</th>
+<th>Year</th>
+<th>Subject</th>
+<th>Exam Date</th>
+<th>Update</th>
+<th>Delete</th>
+</tr>
+
+<tr th:each="exam : ${exams}">
+
+<form th:action="@{/admin/updateExamInline}" method="post">
+
+<td>
+<input type="hidden" name="id" th:value="${exam.id}">
+<input type="text" name="department" th:value="${exam.department}">
+</td>
+
+<td>
+<select name="year">
+<option th:selected="${exam.year=='First Year'}">First Year</option>
+<option th:selected="${exam.year=='Second Year'}">Second Year</option>
+<option th:selected="${exam.year=='Third Year'}">Third Year</option>
+<option th:selected="${exam.year=='Fourth Year'}">Fourth Year</option>
+</select>
+</td>
+
+<td>
+<input type="text" name="subjectName" th:value="${exam.subjectName}">
+</td>
+
+<td>
+<input type="date" name="examDate" th:value="${exam.examDate}">
+</td>
+
+<td>
+<button type="submit">Update</button>
+</td>
+
+<td>
+<a th:href="@{/admin/deleteExam/{id}(id=${exam.id})}"
+class="delete"
+onclick="return confirm('Delete this exam?')">
+Delete
+</a>
+</td>
+
+</form>
+
+</tr>
+
+</table>
+
+<br>
+
+<a th:href="@{/admin/academic}">
+⬅ Back to Academic Panel
+</a>
+
+</body>
+</html>

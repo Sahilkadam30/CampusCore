@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Completed Students</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#F6F0D7;
+    margin:0;
+    padding:0px;
+}
+.header {
+    background: #4F4D46;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+}
+.back-btn {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    padding: 8px 14px;
+    background: white;
+    color: #0d6efd;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+/* heading */
+h2{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+/* table */
+table{
+    width:80%;
+    margin:auto;
+    border-collapse:collapse;
+    background:white;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* table cells */
+th, td{
+    padding:12px;
+    text-align:center;
+}
+
+th{
+    background:#e6d9a7;
+}
+
+tr:nth-child(even){
+    background:#f9f9f9;
+}
+
+</style>
+
+</head>
+
+<body>
+<div class="header">
+    <a th:href="@{/admin/dashboard}" class="back-btn">← Back</a>
+    <h2>Admin Academic Management</h2>
+</div>
+<h2>Completed Students</h2>
+
+<table>
+
+<tr>
+<th>PRN</th>
+<th>Name</th>
+<th>Department</th>
+<th>Year</th>
+</tr>
+
+<tr th:each="s : ${students}">
+
+<td th:text="${s.prn}"></td>
+<td th:text="${s.name}"></td>
+<td th:text="${s.department}"></td>
+<td th:text="${s.year}"></td>
+
+</tr>
+
+</table>
+
+</body>
+</html>

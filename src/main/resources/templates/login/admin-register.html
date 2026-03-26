@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Register</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #141e30, #243b55);
+        }
+
+        .login-container {
+            background-color: #1f1f1f;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        h2 {
+            color: #ffffff;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            background-color: #ffffff;
+            color: #000;
+        }
+
+        input:focus {
+            box-shadow: 0 0 5px #2196F3;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background-color: #2196F3;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #1976D2;
+            transform: scale(1.02);
+        }
+
+        /* 🔥 One row buttons */
+        .link-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .link-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .login-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .login-btn:hover {
+            background-color: #45a049;
+        }
+
+        .student-btn {
+            border: 2px solid #00c6ff;
+            color: #00c6ff;
+            background: transparent;
+        }
+
+        .student-btn:hover {
+            background: #00c6ff;
+            color: #000;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+
+    <h2>Admin Registration 👨‍💼</h2>
+
+    <form th:action="@{/admin/register}" th:object="${admin}" method="post">
+
+        <input type="text" th:field="*{adminId}" placeholder="Admin ID" required>
+        <input type="text" th:field="*{firstName}" placeholder="First Name" required>
+        <input type="text" th:field="*{lastName}" placeholder="Last Name" required>
+        <input type="email" th:field="*{email}" placeholder="Email" required>
+
+        <input type="text" th:field="*{secretCode}" placeholder="Secret Code" required>
+
+        <input type="password" th:field="*{password}" placeholder="Password" required>
+        <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <!-- 🔥 One row buttons -->
+    <div class="link-row">
+        <a th:href="@{/admin/login}" class="link-btn login-btn">
+            Admin Login
+        </a>
+
+        <a th:href="@{/}" class="link-btn student-btn">
+            Student Login
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>
